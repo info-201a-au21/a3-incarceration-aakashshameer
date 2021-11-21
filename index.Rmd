@@ -1,0 +1,56 @@
+---
+title: "Analysis of Incarceration Rates by Aakash Shameer"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+source("analysis.R")
+```
+
+## Introduction of the Analysis
+
+In recent times, we have witness and realized the importance of the equality in terms of race and ethnicity through the Black Lives Matter (BLM) and now we can prove it through data to see and prove the current situation in America. The BLM movement shows us the really dire condition of the law enforcement and the racism that officers act without having any accountability from any higher parties. Enough is enough. [This article ](https://www.aclu.org/news/criminal-law-reform/black-lives-matter-is-about-more-than-the-police/) shows the amount of funding that police officers which is really interesting because these police officers haven't been given the formal implicit bias training. Furthermore, I also want to touch on the ICE detainees based on prior news headlines and articles I have read about their mistreatment behind the scenes. For example, [this article](https://www.aclu.org/issues/immigrants-rights/ice-and-border-patrol-abuses) shows that the hearing given to these detainees were not fair.
+
+## Summary of the Analysis
+
+Based on that, in this summary, I have chosen to explore the data related to Jail and Prison count for certain population of races. This is to see the discrepancy between the number of prisoners and the races of these prisoners. Moreover, I will be hoping to compare it based on different states in America to see which states has the percentage of different races. I am also trying to see the data of Jail Population Count related to ICE detainees as well as comparing US jails compared to jails in other countries. [This article](https://www.vera.org/publications/sentencing-and-prison-practices-in-germany-and-the-netherlands-implications-for-the-united-states) by Vera Institute reports that the incarceration rate of US is 693 per 100, 000 residents compared to 76 per 100, 000 residents in Germany. therefore, I am curious to prove this statement or find a similar relationship. 
+
+Here, we can see that in 2016, the average proportion of black people in jail is `r format(black_pop_year_2016, big.mark = ", ", digits = 2)`, while the average proportion of white people in jail is `r format(white_pop_year_2016, big.mark = ", ", digits = 2)`. If pitted against the Latinx proportion, we have `r format(latinx_pop_year_2016, big.mark = ", ", digits = 2)`. These rates are incarceration rate over 100, 00 residents. We can also see that if we divide it by states, the average numbers would still be high. Black being `r format(mean_black_pop_state, big.mark = ", ", digits = 2)`; White being  `r format(mean_white_pop_state, big.mark = ", ", digits = 2)`; Latinos being  `r format(latinx_pop_state, big.mark = ", ", digits = 2)`. This shows that they're treated indifferently regardless of state.
+
+Now, let's take a look at figures from ICE and view the number changing from 1990 to 2018. Here, this is the jail population count of ICE detainees on a 10 year period from 1990 to 2018: 1990 to 2000 is `r format(ice_1990_to_2000, big.mark = ", ", digits = 2)`; 2001 to 2010 is `r format(ice_2001_to_2010, big.mark = ", ", digits = 2)`; and 2011 to 2018 is `r format(ice_2011_to_2018, big.mark = ", ", digits = 2)`. The numbers here have a huge increase from 1990 to 2010. Lastly, we will look at the increase of jail population in relation to the rated capacity of jail. First, we'll have to get the data related to the proportion of people in jail and the capacity of jail. We can see that in 2000, the proportion is `r format(jail_cap_rate_2000)`; 2010 is `r format(jail_cap_rate_2010)`; 2018 is `r format(jail_cap_rate_2018)`. While these numbers are slowly decreasing, the jail capacity is not. In 2000, we have `r format(jail_cap_2000, big.mark = ", ")`; `r format(jail_cap_2010, big.mark = ", ")` in 2010 and `r format(jail_cap_2018, big.mark = ", ")` in 2018. The numbers we see here are increasing.
+
+## Jail Trends Based on Race
+
+You can also embed plots, for example:
+
+``` {r, fig.align='center', echo = FALSE}
+# Trends over time for chart based on race
+jail_race_trends_over_time
+```
+
+Here we can see a breakdown of the number of people in jail based on race from 1990 to 2018. There is an obvious discrepancy for the Black population to have high jail rates. This can be prevalent especially from the years of 1990 to 2000 where it peaked at around 7500 people. Besides that, we can also witness the number of white people being the lowest amoung all of the races. It is clear and obvious that the rate of change of people in jail is based on population. We can see whether it has been an increase or decrease in the rate of incarceration. Overall, the black communi
+
+Here we can see that black people are disproportionately having high jail rates. This is especially prevalent during the year 1990 to 2000 where it grows even higher. Even so, the numbers for black people are high than any other races for the whole period. This is alarming. Here we can see white people are having the lowest number of people at all time. I've included this chart to see the rate of change of people in jail based on population. We can see whether it has been an increase or decrease in rate of incarceration. Overall, the number of blacks rose at first, then fluctuates but still higher than any other races. 
+
+After seeing that the Blacks and Whites are the most and least populated races in jail, I decided to plot two graphs to see the differences in terms of treatment of Whites and Blacks in jail. 
+
+``` {r, figures-side, fig.show="hold", out.width="50%", echo = FALSE}
+# Variable comparison chart
+var_comp_black
+var_comp_white
+```
+
+
+The chart shows relationship between Jail Rated Capacity and the number of Black and White people in Jail. This way, we can see how the two variables correlate with one another. I've put two chart side by side to see the difference in terms of treatment of Black and White people in Jail. I've omitted the numbers of Blacks and Whites above 4,000 and Jail Rated Capacity to less than 8,000 to see clearly the differences in the terms of general direction of the data. Here we can see that we have a huge spots of data on the number of black people at 500 with the jail capacity of 1,000. In whites, the spot of data is not huge. Generally, we can also see that there's more numbers of Black People in Jail above the 2,000 people. 
+
+Next, we'll look at the data in a map. This will allow us to see much clearly the division between state lines and the number of black people in jail. These data are taken from 2018, the most recent year. 
+
+``` {r, chunk, figures-side, fig.show="hold", out.width="50%", echo = FALSE}
+# Map
+map_jail_white
+map_jail_black
+```
+
+From the map, we can witness a high number of black people in jail in the Southern States which is around 20,000. On the other hand, we can see that the number of white people in jail based on state lines is also very high in the South. You can also make your own interpretation of the different states and the number of black/white people in jail. 
+
+Thank you for reading my report. 
