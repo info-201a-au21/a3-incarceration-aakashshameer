@@ -9,27 +9,31 @@ library(dplyr)
 # An Analysis of the Vera Institute of Justice Incarceration Trends Dataset
 
 
-data <- read.csv("https://raw.githubusercontent.com/vera-institute/incarceration-trends/master/incarceration_trends.csv")
+data <- read.csv(paste0("https://raw.githubusercontent.com/vera-institute/",
+                        "incarceration-trends/master/incarceration_trends.csv"))
 
 # Black Population Proportion from the Year 2016.
 black_pop_year_2016 <- data %>%
                         group_by(year) %>%
                         select(black_jail_pop_rate) %>%
                         filter(year == "2016") %>%
-                        summarise(average = mean(black_jail_pop_rate, na.rm = TRUE)) %>%
+                        summarise(average = mean(black_jail_pop_rate,
+                                                 na.rm = TRUE)) %>%
                         pull(average)
 
 # Black Population Proportion from all years
 black_pop_year <- data %>%
                    group_by(year) %>%
                    select(black_jail_pop_rate) %>%
-                   summarise(black_year = mean(black_jail_pop_rate, na.rm = TRUE))
+                   summarise(black_year = mean(black_jail_pop_rate,
+                                               na.rm = TRUE))
 
 # Latinx Population Proportion from the Year 2016.
 latinx_pop_year_2016 <- data %>%
                          group_by(year) %>%
                          select(latinx_jail_pop_rate) %>%
-                         summarise(average = mean(latinx_jail_pop_rate, na.rm = T)) %>%
+                         summarise(average = mean(latinx_jail_pop_rate,
+                                                  na.rm = T)) %>%
                          filter(year == "2016") %>%
                          pull(average)
 
@@ -37,13 +41,15 @@ latinx_pop_year_2016 <- data %>%
 latinx_pop_year <- data %>%
                     group_by(year) %>%
                     select(latinx_jail_pop_rate) %>%
-                    summarise(latinx_year = mean(latinx_jail_pop_rate, na.rm = TRUE))
+                    summarise(latinx_year = mean(latinx_jail_pop_rate,
+                                                 na.rm = TRUE))
 
 # White Population Proportion from the Year 2016.
 white_pop_year_2016 <- data %>%
                         group_by(year) %>%
                         select(white_jail_pop_rate) %>%
-                        summarise(average = mean(white_jail_pop_rate, na.rm = T)) %>%
+                        summarise(average = mean(white_jail_pop_rate,
+                                                 na.rm = T)) %>%
                         filter(year == "2016") %>%
                         pull(average)
 
@@ -63,7 +69,8 @@ asian_pop_year <- data %>%
 native_pop_year <- data %>%
                     group_by(year) %>%
                     select(native_jail_pop_rate) %>%
-                    summarise(native_year = mean(native_jail_pop_rate, na.rm = T))
+                    summarise(native_year = mean(native_jail_pop_rate,
+                                                 na.rm = T))
 
 # Proportion of the Population of Races
 pop_by_races <- left_join(asian_pop_year, black_pop_year, by = "year") %>%
@@ -84,14 +91,16 @@ black_pop_state <- data %>%
 
 # Average Data of Population Proportion of Black Based on States
 mean_black_pop_state <- black_pop_state %>%
-                            summarise(average_state = mean(average, na.rm = T)) %>%
+                            summarise(average_state = mean(average,
+                                                           na.rm = T)) %>%
                             pull(average_state)
 
 # Data of Population Proportion of Latinx Based on States
 latinx_pop_state <- data %>%
                     group_by(state) %>%
                     select(latinx_jail_pop_rate) %>%
-                    summarise(average = mean(latinx_jail_pop_rate, na.rm = T)) %>%
+                    summarise(average = mean(latinx_jail_pop_rate,
+                                             na.rm = T)) %>%
                     summarise(average_state = mean(average, na.rm = T)) %>%
                     pull(average_state)
 
@@ -186,7 +195,8 @@ jail_cap_2018 <- data %>%
 jail_cap_state <- data %>%
                   select(year, state, jail_rated_capacity) %>%
                   group_by(state) %>%
-                  summarise("Jail Capcity" = mean(jail_rated_capacity, na.rm = T))
+                  summarise("Jail Capcity" = mean(jail_rated_capacity,
+                                                  na.rm = T))
 
 # Jail Race Trends Over Time Chart
 pop_by_races_long <- gather(
@@ -213,48 +223,50 @@ jail_race_trends_over_time <-
 
 # Variable Comparison Chart
 jail_cap_black <- data %>%
-                      mutate(location = paste(county_name, state, sep = ", ")) %>%
-                      filter(year >= 1990) %>%
-                      select(year, jail_rated_capacity, black_jail_pop, location, state, region) %>%
-                      group_by(location) %>%
-                      summarise(jail_rated_capacity = mean(jail_rated_capacity), black_jail_pop = mean(black_jail_pop), state = state, region = region) %>%
-                      distinct(location, .keep_all = T) %>%
-                      rename(Region = region) %>%
-                      filter(black_jail_pop <= 4000)
+mutate(location = paste(county_name, state, sep = ", ")) %>%
+filter(year >= 1990) %>%
+select(year, jail_rated_capacity, black_jail_pop, location, state, region) %>%
+group_by(location) %>%
+summarise(jail_rated_capacity = mean(jail_rated_capacity),
+          black_jail_pop = mean(black_jail_pop),
+          state = state, region = region) %>%
+distinct(location, .keep_all = T) %>%
+rename(Region = region) %>%
+filter(black_jail_pop <= 4000)
 
 jail_cap_white <- data %>%
-                      mutate(location = paste(county_name, state, sep = ", ")) %>%
-                      filter(year >= 1990) %>%
-                      select(year, jail_rated_capacity, white_jail_pop, location, state, region) %>%
-                      group_by(location) %>%
-                      summarise(
-                        jail_rated_capacity = mean(jail_rated_capacity),
-                        white_jail_pop = mean(white_jail_pop), state = state, region = region
-                      ) %>%
-                      distinct(location, .keep_all = T) %>%
-                      rename(Region = region) %>%
-                      filter(white_jail_pop <= 4000) %>%
-                      filter(jail_rated_capacity <= 8000)
+mutate(location = paste(county_name, state, sep = ", ")) %>%
+filter(year >= 1990) %>%
+select(year, jail_rated_capacity, white_jail_pop, location, state, region) %>%
+group_by(location) %>%
+summarise(
+  jail_rated_capacity = mean(jail_rated_capacity),
+  white_jail_pop = mean(white_jail_pop), state = state, region = region
+) %>%
+distinct(location, .keep_all = T) %>%
+rename(Region = region) %>%
+filter(white_jail_pop <= 4000) %>%
+filter(jail_rated_capacity <= 8000)
 
 var_comp_black <- ggplot(data = jail_cap_black) +
-                  geom_point(
-                    mapping = aes(x = jail_rated_capacity, y = black_jail_pop, color = Region)
-                  ) +
-                  labs(
-                    title = "Jail Rated Capacity vs Black people in Jail",
-                    x = "Jail Rated Capacity",
-                    y = "Black People in Jail"
-                  )
+geom_point(
+  mapping = aes(x = jail_rated_capacity, y = black_jail_pop, color = Region)
+) +
+labs(
+  title = "Jail Rated Capacity vs Black people in Jail",
+  x = "Jail Rated Capacity",
+  y = "Black People in Jail"
+)
 
 var_comp_white <- ggplot(data = jail_cap_white) +
-                  geom_point(
-                    mapping = aes(x = jail_rated_capacity, y = white_jail_pop, color = Region)
-                  ) +
-                  labs(
-                    title = "Jail Rated Capacity vs White people in Jail",
-                    x = "Jail Rated Capacity",
-                    y = "White People in Jail"
-                  )
+geom_point(
+  mapping = aes(x = jail_rated_capacity, y = white_jail_pop, color = Region)
+) +
+labs(
+  title = "Jail Rated Capacity vs White people in Jail",
+  x = "Jail Rated Capacity",
+  y = "White People in Jail"
+)
 
 # Map
 state_name <- cbind(state.abb, state.name) %>%
@@ -265,28 +277,28 @@ state_name <- read.csv("state_name.csv") %>%
               mutate(state_long = tolower(state_long))
 
 black_people_state <- data %>%
-                      filter(year == 2018) %>%
-                      select(year, state, black_jail_pop, black_pop_15to64) %>%
-                      mutate(black_rate = (black_jail_pop / black_pop_15to64)) %>%
-                      rename(state_short = state) %>%
-                      left_join(state_name, by = "state_short") %>%
-                      group_by(state_long) %>%
-                      summarise(
-                        black_jail_pop = sum(black_jail_pop, na.rm = T),
-                        black_pop_15to64 = sum(black_pop_15to64, na.rm = T)
-                      )
+    filter(year == 2018) %>%
+    select(year, state, black_jail_pop, black_pop_15to64) %>%
+    mutate(black_rate = (black_jail_pop / black_pop_15to64)) %>%
+    rename(state_short = state) %>%
+    left_join(state_name, by = "state_short") %>%
+    group_by(state_long) %>%
+    summarise(
+      black_jail_pop = sum(black_jail_pop, na.rm = T),
+      black_pop_15to64 = sum(black_pop_15to64, na.rm = T)
+    )
 
 white_people_state <- data %>%
-                      filter(year == 2018) %>%
-                      select(year, state, white_jail_pop, white_pop_15to64) %>%
-                      mutate(black_rate = (white_jail_pop / white_pop_15to64)) %>%
-                      rename(state_short = state) %>%
-                      left_join(state_name, by = "state_short") %>%
-                      group_by(state_long) %>%
-                      summarise(
-                        white_jail_pop = sum(white_jail_pop, na.rm = T),
-                        white_pop_15to64 = sum(white_pop_15to64, na.rm = T)
-                      )
+    filter(year == 2018) %>%
+    select(year, state, white_jail_pop, white_pop_15to64) %>%
+    mutate(black_rate = (white_jail_pop / white_pop_15to64)) %>%
+    rename(state_short = state) %>%
+    left_join(state_name, by = "state_short") %>%
+    group_by(state_long) %>%
+    summarise(
+      white_jail_pop = sum(white_jail_pop, na.rm = T),
+      white_pop_15to64 = sum(white_pop_15to64, na.rm = T)
+    )
 
 
 state_shape_black <- map_data("state") %>%
@@ -311,31 +323,29 @@ blank_theme <- theme_bw() +
 
 # Create a blank map of U.S. states
 map_jail_black <- ggplot(state_shape_black) +
-                  geom_polygon(
-                    mapping = aes(x = long, y = lat, group = group, fill = black_jail_pop),
-                    color = "white",
-                    size = .1
-                  ) +
-                  labs(
-                    title = "No of Black people in Jail based on State"
-                  ) +
-                  coord_map() + # use a map-based coordinate system
-                  scale_fill_continuous(low = "#132B43", high = "Red") +
-                  labs(fill = "Black People in Jail") +
-                  blank_theme
+  geom_polygon(
+    mapping = aes(x = long, y = lat, group = group, fill = black_jail_pop),
+    color = "white",
+    size = .1
+  ) +
+  labs(
+    title = "No of Black people in Jail based on State"
+  ) +
+  coord_map() + # use a map-based coordinate system
+  scale_fill_continuous(low = "#132B43", high = "Red") +
+  labs(fill = "Black People in Jail") +
+  blank_theme
 
 map_jail_white <- ggplot(state_shape_white) +
-                  geom_polygon(
-                    mapping = aes(x = long, y = lat, group = group, fill = white_jail_pop),
-                    color = "white",
-                    size = .1
-                  ) +
-                  labs(
-                    title = "No of White people in Jail based on State"
-                  ) +
-                  coord_map() + # use a map-based coordinate system
-                  scale_fill_continuous(low = "#132B43", high = "Green") +
-                  labs(fill = "White People in Jail") +
-                  blank_theme
-
-
+    geom_polygon(
+      mapping = aes(x = long, y = lat, group = group, fill = white_jail_pop),
+      color = "white",
+      size = .1
+    ) +
+    labs(
+      title = "No of White people in Jail based on State"
+    ) +
+    coord_map() + # use a map-based coordinate system
+    scale_fill_continuous(low = "#132B43", high = "Green") +
+    labs(fill = "White People in Jail") +
+    blank_theme
